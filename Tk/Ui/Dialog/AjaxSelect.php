@@ -166,6 +166,16 @@ class AjaxSelect extends Dialog
     }
 
     /**
+     * @return null|string
+     */
+    public function getSelectedId()
+    {
+        if ($this->getRequest()->has('selectedId'))
+            return $this->getRequest()->get('selectedId');
+        return '';
+    }
+
+    /**
      * @return Callback
      */
     public function getOnAjax()
@@ -175,6 +185,11 @@ class AjaxSelect extends Dialog
 
     /**
      * Callable: function(\Tk\Request $request) : array|object {}
+     * Return the list of items in the form of:
+     *   array(
+     *     'id' => {int},
+     *     'name' => {string}
+     *   )
      *
      * @param callable $onAjax
      * @return $this
@@ -303,7 +318,7 @@ jQuery(function($) {
 
     dialog.find('.btn-search').click(function(e) {
       processing(true);
-      if (dialog.find('.input-search').val())
+      //if (dialog.find('.input-search').val())
         settings.ajaxParams.keywords = dialog.find('.input-search').val();
       $.get(settings.ajaxUrl, settings.ajaxParams, function (data) {
         var panel = dialog.find('.dialog-table').empty();
@@ -396,8 +411,8 @@ JS;
 <div class="row">
   <div class="col-md-12">
     <p var="notes" choice="notes"></p>
-    <div class="input-group has-feedback has-feedback-left">
-      <input type="text" placeholder="Search by keyword ..." class="form-control input-sm input-search"/>
+    <div class="input-group">
+      <input type="text" placeholder="Search by keyword ..." name="keywords" class="form-control input-sm input-search"/>
       <div class="form-control-feedback" style="">
         <i class="fa fa-spinner fa-spin"></i>
       </div>
